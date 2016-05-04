@@ -31,28 +31,56 @@
         <!-- ng-init removed and ng-controller added -->
         <div class="row row-content" ng-controller="menuController as menuCtrl">
             <div class="col-xs-12">
-               <ul class="media-list">
+                <!-- add nav nav-tabs in Exercise Angular Filters @ 3:07 -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <!-- ng-click event occurs when users click on a tab -->
+                    <!-- ng-click code below the selected tab is activated -->
+                    <!-- ng-class="{active:menuCtrl.isSelected(1)} below added @ 10:45 -->
+                    <!-- https://docs.angularjs.org/api/ng/directive/ngClass -->
+                    <!-- the ng-class directive dynamically binds one or more CSS classes to an HTML element. -->
+                    <li role="presentation" ng-class="{active:menuCtrl.isSelected(1)}">
+                      <a ng-click="menuCtrl.select(1)" aria-controls="all menu" role="tab">
+                        The Menu</a>
+                    </li>
+                    <li role="presentation" ng-class="{active:menuCtrl.isSelected(2)}">
+                      <a ng-click="menuCtrl.select(2)" aria-controls="appetizers" role="tab">
+                        Appetizers</a>
+                    </li>
+                    <li role="presentation" ng-class="{active:menuCtrl.isSelected(3)}">
+                      <a ng-click="menuCtrl.select(3)" aria-controls="mains" role="tab">
+                        Mains</a>
+                    </li>
+                    <li role="presentation" ng-class="{active:menuCtrl.isSelected(4)}">
+                      <a ng-click="menuCtrl.select(4)" aria-controls="desserts" role="tab">
+                        Desserts</a>
+                    </li>
+                </ul>
+              <div class="tab-content"><!-- div containing all the menu panels -->
+                <!-- refer this for tab-pane fade in demo/tut http://www.w3schools.com/bootstrap/bootstrap_ref_js_tab.asp -->
+                <ul class="media-list tab-pane fade in active">
                 <!-- previously we used <li class="media" ng-repeat="dish in dishes">-->
                 <!-- dish in menuCtrl.dishes since dishes was assigned to this.dishes 
                      and app.controller('menuController  &  ng-controller="menuController as menuCtrl" -->
-                <li class="media" ng-repeat="dish in menuCtrl.dishes">
-                    <div class="media-left media-middle">
-                        <a href="#">
-                        <img class="media-object img-thumbnail"
-                         ng-src={{dish.image}} alt="Uthappizza">
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <h2 class="media-heading">{{dish.name}}
-                         <span class="label label-danger">{{dish.label}}</span>
-                         <span class="badge">{{dish.price | currency}}</span></h2>
-                        <p>{{dish.description}}</p>
-                        <p>Comment: {{dish.comment}}</p>
-                        <p>Type your comment:
-                         <input type="text" ng-model="dish.comment"></p>
-                    </div>
-                </li>
-              </ul>
+                    <!-- <li class="media" ng-repeat="dish in menuCtrl.dishes"> -->
+                    <!-- below added for Exercise Angular Filters @ 19:24 -->
+                    <!-- below: 'filter' uses the variable filtText from the menucontroller to filter the items from the dishes array. -->
+                    <li class="media" ng-repeat="dish in menuCtrl.dishes | filter:menuCtrl.filtText">
+                        <div class="media-left media-middle">
+                            <a href="#">
+                            <img class="media-object img-thumbnail"
+                             ng-src={{dish.image}} alt="Uthappizza">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h2 class="media-heading">{{dish.name}}
+                             <span class="label label-danger">{{dish.label}}</span>
+                             <span class="badge">{{dish.price | currency}}</span></h2>
+                            <p>{{dish.description}}</p>
+                            <!-- previous comment input removed. -->
+                        </div>
+                    </li>
+                </ul>
+              </div>
             </div><!-- end class="col-xs-12" -->
 
         </div><!-- end of class="row row-content" -->
@@ -61,46 +89,71 @@
   <script>
     var app = angular.module('confusionApp',[]);
     app.controller('menuController', function() {
-            var dishes=[
-                 {
-                   name:'Uthapizza',
-                   image: 'images/uthapizza.png',
-                   category: 'mains',
-                   label:'Hot',
-                   price:'4.99',
-                   description:'A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer.',
-                   comment: ''
-                },
-                {
-                   name:'Zucchipakoda',
-                   image: 'images/zucchipakoda.png',
-                   category: 'appetizer',
-                   label:'',
-                   price:'1.99',
-                   description:'Deep fried Zucchini coated with mildly spiced Chickpea flour batter accompanied with a sweet-tangy tamarind sauce',
-                   comment: ''
-                },
-                {
-                   name:'Vadonut',
-                   image: 'images/vadonut.png',
-                   category: 'appetizer',
-                   label:'New',
-                   price:'1.99',
-                   description:'A quintessential ConFusion experience, is it a vada or is it a donut?',
-                   comment: ''
-                },
-                {
-                   name:'ElaiCheese Cake',
-                   image: 'images/elaicheesecake.png',
-                   category: 'dessert',
-                   label:'',
-                   price:'2.99',
-                   description:'A delectable, semi-sweet New York Style Cheese Cake, with Graham cracker crust and spiced with Indian cardamoms',
-                   comment: ''
-                }
-                ];
-            this.dishes = dishes;
-        });
+        this.tab = 1;// added for Exercise Angular Filters @ 7:12
+        // above nominates tab selected when page is loaded.
+        //below selects tab the user clicks on. refer  Exercise (Video): Angular Filters @10:45
+        //this.tab records which tab selected by user.
+        this.filtText = '';//added for Exercise Angular Filters @21:09
+        //this.filtText creates variable filtText
+        //initializes page with filtText set to '', so not filtering anything.
+        this.select = function(setTab) {
+            this.tab = setTab;
+            //these if else if conditions added for Exercise Angular Filters @21:23
+            //when a tab is selected, the filtText value is updated to reflect the selected tab
+            //
+            if (setTab === 2)
+                    this.filtText = "appetizer";
+                else if (setTab === 3)
+                    this.filtText = "mains";
+                else if (setTab === 4)
+                    this.filtText = "dessert";
+                else
+                    this.filtText = "";
+        }
+        //function isSelected added to idenfity which tab was clicked on.
+        this.isSelected = function (checkTab) {
+                return (this.tab === checkTab);
+            }
+        var dishes=[
+             {
+               name:'Uthapizza',
+               image: 'images/uthapizza.png',
+               category: 'mains',
+               label:'Hot',
+               price:'4.99',
+               description:'A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer.',
+               comment: ''
+            },
+            {
+               name:'Zucchipakoda',
+               image: 'images/zucchipakoda.png',
+               category: 'appetizer',
+               label:'',
+               price:'1.99',
+               description:'Deep fried Zucchini coated with mildly spiced Chickpea flour batter accompanied with a sweet-tangy tamarind sauce',
+               comment: ''
+            },
+            {
+               name:'Vadonut',
+               image: 'images/vadonut.png',
+               category: 'appetizer',
+               label:'New',
+               price:'1.99',
+               description:'A quintessential ConFusion experience, is it a vada or is it a donut?',
+               comment: ''
+            },
+            {
+               name:'ElaiCheese Cake',
+               image: 'images/elaicheesecake.png',
+               category: 'dessert',
+               label:'',
+               price:'2.99',
+               description:'A delectable, semi-sweet New York Style Cheese Cake, with Graham cracker crust and spiced with Indian cardamoms',
+               comment: ''
+            }
+            ];
+        this.dishes = dishes;
+    });
     <!-- this.dishes is now available to generate html -->
   </script>
 </body>
