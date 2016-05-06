@@ -1,0 +1,71 @@
+<script src="../bower_components/angular/angular.min.js"></script><!-- added for Exercise Introduction to AngularJS  -->
+  <script>
+    var app = angular.module('confusionApp',[]);
+    app.controller('menuController', function() {
+        this.tab = 1;// added for Exercise Angular Filters @ 7:12
+        // above nominates tab selected when page is loaded.
+        //below selects tab the user clicks on. refer  Exercise (Video): Angular Filters @10:45
+        //this.tab records which tab selected by user.
+        this.filtText = '';//added for Exercise Angular Filters @21:09
+        //this.filtText creates variable filtText
+        //initializes page with filtText set to '', so not filtering anything.
+        this.select = function(setTab) {
+            this.tab = setTab;
+            //these if else if conditions added for Exercise Angular Filters @21:23
+            //when a tab is selected, the filtText value is updated to reflect the selected tab
+            //
+            if (setTab === 2)
+                    this.filtText = "appetizer";
+                else if (setTab === 3)
+                    this.filtText = "mains";
+                else if (setTab === 4)
+                    this.filtText = "dessert";
+                else
+                    this.filtText = "";
+        }
+        //function isSelected added to idenfity which tab was clicked on.
+        this.isSelected = function (checkTab) {
+                return (this.tab === checkTab);
+            }
+        var dishes=[
+             {
+               name:'Uthapizza',
+               image: 'images/uthapizza.png',
+               category: 'mains',
+               label:'Hot',
+               price:'4.99',
+               description:'A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer.',
+               comment: ''
+            },
+            {
+               name:'Zucchipakoda',
+               image: 'images/zucchipakoda.png',
+               category: 'appetizer',
+               label:'',
+               price:'1.99',
+               description:'Deep fried Zucchini coated with mildly spiced Chickpea flour batter accompanied with a sweet-tangy tamarind sauce',
+               comment: ''
+            },
+            {
+               name:'Vadonut',
+               image: 'images/vadonut.png',
+               category: 'appetizer',
+               label:'New',
+               price:'1.99',
+               description:'A quintessential ConFusion experience, is it a vada or is it a donut?',
+               comment: ''
+            },
+            {
+               name:'ElaiCheese Cake',
+               image: 'images/elaicheesecake.png',
+               category: 'dessert',
+               label:'',
+               price:'2.99',
+               description:'A delectable, semi-sweet New York Style Cheese Cake, with Graham cracker crust and spiced with Indian cardamoms',
+               comment: ''
+            }
+            ];
+        this.dishes = dishes;
+    });
+    <!-- this.dishes is now available to generate html -->
+  </script>
